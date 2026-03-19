@@ -5,47 +5,37 @@
 
 <style>
 body{
-  margin:0;
   background:black;
   color:white;
   text-align:center;
   font-family:Arial;
 }
-
-.container{
-  margin-top:80px;
-}
-
+.container{margin-top:80px;}
 input{
   padding:12px;
   margin:10px;
   width:80%;
   border-radius:8px;
-  border:none;
 }
-
 button{
   padding:12px;
   margin:10px;
   width:80%;
-  font-size:16px;
   border:none;
   border-radius:8px;
 }
-
 .login{background:#4caf50;color:white;}
 .register{background:#ff5722;color:white;}
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-<h2 id="title">🔐 Login / Register</h2>
+<h2>🔐 Login / Register</h2>
 
-<input id="name" placeholder="Full Name (for register)">
+<input id="name" placeholder="Full Name (register)">
 <input id="phone" placeholder="Mobile Number">
 <input id="pass" placeholder="Password">
 
@@ -68,15 +58,11 @@ alert("Fill all fields ❌");
 return;
 }
 
-let user={
-name:name,
-phone:phone,
-pass:pass
-};
+let user={name,phone,pass};
 
 localStorage.setItem("user",JSON.stringify(user));
 
-alert("Registered Successfully ✅");
+alert("Registered ✅");
 }
 
 // LOGIN
@@ -94,12 +80,13 @@ return;
 
 if(u.phone==phone && u.pass==pass){
 
+// 🔥 IMPORTANT FIX
 localStorage.setItem("loggedIn","true");
 
 alert("Login Success ✅");
 
-// dashboard
-window.location="index.html";
+// redirect
+window.location="home.html";
 
 }else{
 alert("Wrong details ❌");
