@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JOIN MATCH</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:black;
+  color:white;
+}
+
+.header{
+  padding:15px;
+  background:#111;
+  text-align:center;
+}
+
+input{
+  width:80%;
+  padding:10px;
+  margin:10px;
+  border-radius:8px;
+  border:none;
+}
+
+button{
+  padding:10px 20px;
+  background:#7c4dff;
+  color:white;
+  border:none;
+  border-radius:5px;
+}
+
+.teamBox{
+  background:#eee;
+  color:black;
+  margin:10px;
+  padding:10px;
+  border-radius:10px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  margin:5px 0;
+}
+
+.joinBtn{
+  width:100%;
+  position:fixed;
+  bottom:0;
+  left:0;
+  padding:15px;
+  background:#5a00cc;
+  color:white;
+  border:none;
+  font-size:18px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">🎮 JOIN MATCH</div>
+
+<div id="step1">
+
+  <h3 style="text-align:center;">Enter UID</h3>
+  <input id="uid" placeholder="Enter Game UID">
+
+  <div style="text-align:center;">
+    <button onclick="next()">Continue</button>
+  </div>
+
+</div>
+
+<div id="step2" style="display:none;">
+
+  <h3 style="text-align:center;">Select Match Position</h3>
+
+  <div id="teams"></div>
+
+  <button class="joinBtn" onclick="finalJoin()">JOIN NOW</button>
+
+</div>
+
+<script>
+
+// Step change
+function next(){
+  let uid = document.getElementById("uid").value;
+
+  if(!uid){
+    alert("Enter UID ❌");
+    return;
+  }
+
+  localStorage.setItem("uid",uid);
+
+  document.getElementById("step1").style.display="none";
+  document.getElementById("step2").style.display="block";
+}
+
+// Create teams
+let teamDiv = document.getElementById("teams");
+
+for(let i=1;i<=21;i++){
+
+  let div = document.createElement("div");
+  div.className="teamBox";
+
+  div.innerHTML = `
+    <div class="row">
+      <span>Team ${i}</span>
+
+      <span>
+        A <input type="radio" name="team" value="${i}-A">
+        B <input type="radio" name="team" value="${i}-B">
+      </span>
+    </div>
+  `;
+
+  teamDiv.appendChild(div);
+}
+
+// Final join
+function finalJoin(){
+
+  let selected = document.querySelector('input[name="team"]:checked');
+
+  if(!selected){
+    alert("Select team ❌");
+    return;
+  }
+
+  let wallet = Number(localStorage.getItem("wallet")) || 10;
+
+  if(wallet < 1){
+    alert("Low balance ❌");
+    return;
+  }
+
+  wallet -= 1;
+  localStorage.setItem("wallet",wallet);
+
+  alert("✅ Joined Successfully!\nTeam: "+selected.value);
+}
+
+</script>
+
+</body>
+</html>
