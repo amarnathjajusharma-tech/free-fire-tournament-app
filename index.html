@@ -11,22 +11,39 @@ body{
   font-family:Arial;
 }
 
-.header{
-  padding:15px;
-  text-align:center;
-  background:#111;
-  font-size:22px;
+/* TOP WALLET */
+#topbar{
+  position:fixed;
+  top:0;
+  right:0;
+  background:#ff5722;
+  padding:10px 20px;
+  border-bottom-left-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+  z-index:999;
 }
 
+/* HEADER */
+.header{
+  padding:20px;
+  text-align:center;
+  font-size:22px;
+  background:#111;
+}
+
+/* CARD */
 .card{
-  margin:10px;
+  margin:15px;
   padding:15px;
   background:#2a004f;
   border-radius:10px;
   text-align:center;
+  cursor:pointer;
 }
 
-.section{
+/* CONTENT */
+#content{
   margin-top:10px;
 }
 </style>
@@ -35,9 +52,15 @@ body{
 
 <body>
 
+<!-- WALLET -->
+<div id="topbar" onclick="window.location='wallet.html'">
+💰 ₹<span id="bal">0</span>
+</div>
+
+<!-- HEADER -->
 <div class="header">🔥 PRGAMER DASHBOARD</div>
 
-<!-- NAV BUTTONS -->
+<!-- NAV -->
 <div class="card" onclick="openTab('upcoming')">📅 Upcoming Matches</div>
 <div class="card" onclick="openTab('ongoing')">🔥 Ongoing Matches</div>
 <div class="card" onclick="openTab('completed')">✅ Completed Matches</div>
@@ -45,19 +68,27 @@ body{
 <div class="card" onclick="goMatch()">🎮 FULL MAP</div>
 <div class="card" onclick="goWallet()">💰 WALLET</div>
 
+<!-- CONTENT -->
 <div id="content"></div>
 
 <script>
 
-// OPEN MATCH PAGE
+// NAVIGATION
 function goMatch(){
   window.location.href="match.html";
 }
 
-// OPEN WALLET
 function goWallet(){
   window.location.href="wallet.html";
 }
+
+// LIVE BALANCE
+function updateBalance(){
+  let bal = localStorage.getItem("wallet") || 0;
+  document.getElementById("bal").innerText = bal;
+}
+setInterval(updateBalance,1000);
+updateBalance();
 
 // TAB SYSTEM
 function openTab(type){
