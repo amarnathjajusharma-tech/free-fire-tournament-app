@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PRGAMER MATCH</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:black;
+  color:white;
+}
+
+.header{
+  padding:15px;
+  background:#111;
+  font-size:20px;
+}
+
+.card{
+  background:#1a1a1a;
+  margin:10px;
+  padding:15px;
+  border-radius:10px;
+}
+
+button{
+  padding:8px 15px;
+  background:#ff9800;
+  border:none;
+  border-radius:5px;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">🔥 FULL MAP MATCHES</div>
+
+<div id="matches"></div>
+
+<script>
+
+let wallet = Number(localStorage.getItem("wallet")) || 10;
+
+let matches = [
+  {time:"7:00 PM",type:"Solo",limit:1},
+  {time:"7:20 PM",type:"Duo",limit:2},
+  {time:"7:40 PM",type:"Squad",limit:4},
+  {time:"8:00 PM",type:"Solo",limit:1},
+  {time:"8:20 PM",type:"Duo",limit:2},
+  {time:"8:40 PM",type:"Squad",limit:4},
+  {time:"9:00 PM",type:"Solo",limit:1},
+  {time:"9:20 PM",type:"Duo",limit:2},
+  {time:"9:40 PM",type:"Squad",limit:4},
+  {time:"10:00 PM",type:"Final",limit:4}
+];
+
+let div = document.getElementById("matches");
+
+matches.forEach((m,i)=>{
+
+  let el = document.createElement("div");
+  el.className = "card";
+
+  el.innerHTML = `
+    <h3>${m.type} Match</h3>
+    <p>Time: ${m.time}</p>
+    <p>Entry: ₹1 | Per Kill: ₹0.5</p>
+    <p>Booyah Bonus: ₹10 (Solo)</p>
+    <p>Players Allowed: ${m.limit}</p>
+    <button onclick="joinMatch(${i})">JOIN</button>
+  `;
+
+  div.appendChild(el);
+});
+
+function joinMatch(i){
+
+  if(wallet < 1){
+    alert("Not enough balance");
+    return;
+  }
+
+  wallet -= 1;
+  localStorage.setItem("wallet",wallet);
+
+  let players = JSON.parse(localStorage.getItem("players")) || [];
+
+  players.push({
+    match:matches[i].type,
+    time:matches[i].time
+  });
+
+  localStorage.setItem("players",JSON.stringify(players));
+
+  alert("Joined Successfully!");
+
+  showPlayers();
+}
+
+function showPlayers(){
+  let players = JSON.parse(localStorage.getItem("players")) || [];
+
+  console.log(players);
+}
+
+</script>
+
+</body>
+</html>
