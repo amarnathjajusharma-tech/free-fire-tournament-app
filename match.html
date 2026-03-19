@@ -23,14 +23,12 @@ body{
   margin:15px;
   border-radius:12px;
   overflow:hidden;
-  box-shadow:0 0 10px #000;
 }
 
 .banner{
   width:100%;
-  height:160px;
-  background:url('https://i.ibb.co/5k7VZgQ/freefire.jpg');
-  background-size:cover;
+  height:150px;
+  background:linear-gradient(45deg,#ff0000,#ff9800);
 }
 
 .content{
@@ -54,6 +52,7 @@ body{
   font-size:15px;
 }
 </style>
+
 </head>
 
 <body>
@@ -64,10 +63,12 @@ body{
 
 <script>
 
-// Wallet
-let wallet = Number(localStorage.getItem("wallet")) || 10;
+// wallet default
+if(!localStorage.getItem("wallet")){
+  localStorage.setItem("wallet",10);
+}
 
-// Match Generator
+// generate matches
 let matches = [];
 let types = ["Solo","Duo","Squad"];
 let limits = {Solo:1, Duo:2, Squad:4};
@@ -79,7 +80,6 @@ let index = 0;
 while(hour < 10 || (hour === 10 && minute === 0)){
 
   let type = types[index % 3];
-
   let time = hour + ":" + (minute==0?"00":minute) + " PM";
 
   matches.push({
@@ -101,7 +101,7 @@ while(hour < 10 || (hour === 10 && minute === 0)){
   }
 }
 
-// Render Matches
+// render UI
 let div = document.getElementById("matches");
 
 matches.forEach((m,i)=>{
@@ -130,15 +130,17 @@ matches.forEach((m,i)=>{
         <span>Booyah: ₹${m.type=="Solo"?10:m.type=="Duo"?20:40}</span>
       </div>
 
-      <button class="join" onclick="go join( )">JOIN</button>
+      <button class="join" onclick="joinMatch(${i})">JOIN</button>
     </div>
   `;
 
   div.appendChild(el);
 });
 
-// Join Function
+// JOIN FUNCTION (FIXED)
 function joinMatch(i){
+
+  let wallet = Number(localStorage.getItem("wallet"));
 
   if(wallet < 1){
     alert("❌ Not enough balance");
@@ -148,16 +150,8 @@ function joinMatch(i){
   wallet -= 1;
   localStorage.setItem("wallet",wallet);
 
-  let players = JSON.parse(localStorage.getItem("players")) || [];
-
-  players.push({
-    match:matches[i].type,
-    time:matches[i].time
-  });
-
-  localStorage.setItem("players",JSON.stringify(players));
-
-  alert("✅ Joined Successfully!");
+  // redirect to join page
+  window.location.href = "join.html";
 }
 
 </script>
