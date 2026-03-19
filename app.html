@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome</title>
+</head>
+<body>
+
+<h1>🔥 Welcome 🔥</h1>
+<h3>Choose Language</h3>
+
+<button onclick="goApp('en')">English</button>
+<button onclick="goApp('hi')">Hindi</button>
+
+<script>
+function goApp(lang) {
+  localStorage.setItem("lang", lang);
+  window.location.href = "app.html";
+}
+</script>
+
+</body>
+</html>
