@@ -1,20 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Panel</title>
+<title>ADMIN PANEL</title>
+
+<style>
+body{
+  margin:0;
+  background:black;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+
+.card{
+  background:#222;
+  margin:20px;
+  padding:20px;
+  border-radius:10px;
+}
+
+input{
+  padding:10px;
+  margin:10px;
+  width:80%;
+}
+
+button{
+  padding:10px;
+  margin:10px;
+  background:#4caf50;
+  color:white;
+  border:none;
+  border-radius:5px;
+}
+</style>
+
 </head>
 
-<body style="background:black;color:white;text-align:center">
+<body>
 
-<h2>ADMIN ROOM SET</h2>
+<h2>👑 ADMIN PANEL</h2>
 
-<input id="room" placeholder="Room ID"><br><br>
-<input id="pass" placeholder="Password"><br><br>
+<!-- ROOM SET -->
+<div class="card">
+  <h3>🎮 Set Room ID</h3>
 
-<button onclick="setRoom()">SET ROOM</button>
+  <input id="room" placeholder="Enter Room ID">
+  <input id="pass" placeholder="Enter Password">
+
+  <button onclick="setRoom()">SET ROOM</button>
+</div>
+
+<!-- DEPOSIT APPROVAL -->
+<div class="card">
+  <h3>💰 Approve Deposit</h3>
+
+  <button onclick="approveDeposit()">Approve Deposit</button>
+</div>
+
+<!-- ADD MONEY -->
+<div class="card">
+  <h3>➕ Add Money (Manual)</h3>
+
+  <input id="addAmt" placeholder="Enter Amount">
+
+  <button onclick="addMoney()">Add Money</button>
+</div>
+
+<!-- COMPLETE MATCH -->
+<div class="card">
+  <h3>🏁 Complete Match</h3>
+
+  <input id="reward" placeholder="Enter Reward Amount">
+
+  <button onclick="completeMatch()">Complete Match</button>
+</div>
 
 <script>
 
+// SET ROOM
 function setRoom(){
 
   let room = document.getElementById("room").value;
@@ -27,14 +91,78 @@ function setRoom(){
     return;
   }
 
-  // last match update
   data[data.length-1].room = room;
   data[data.length-1].pass = pass;
   data[data.length-1].started = true;
 
   localStorage.setItem("joinedMatches",JSON.stringify(data));
 
-  alert("✅ Room Updated");
+  alert("✅ Room Set Successfully");
+}
+
+// APPROVE DEPOSIT
+function approveDeposit(){
+
+  let amt = Number(localStorage.getItem("pendingDeposit"));
+
+  if(!amt){
+    alert("No pending deposit ❌");
+    return;
+  }
+
+  let bal = Number(localStorage.getItem("wallet")) || 0;
+
+  bal += amt;
+
+  localStorage.setItem("wallet",bal);
+  localStorage.removeItem("pendingDeposit");
+
+  alert("✅ Deposit Approved & Added");
+}
+
+// ADD MONEY
+function addMoney(){
+
+  let amt = Number(document.getElementById("addAmt").value);
+
+  if(!amt){
+    alert("Enter amount ❌");
+    return;
+  }
+
+  let bal = Number(localStorage.getItem("wallet")) || 0;
+
+  bal += amt;
+  localStorage.setItem("wallet",bal);
+
+  alert("✅ Money Added");
+}
+
+// COMPLETE MATCH
+function completeMatch(){
+
+  let reward = Number(document.getElementById("reward").value);
+
+  let data = JSON.parse(localStorage.getItem("joinedMatches")) || [];
+
+  if(data.length==0){
+    alert("No match ❌");
+    return;
+  }
+
+  // mark complete
+  data[data.length-1].completed = true;
+
+  localStorage.setItem("joinedMatches",JSON.stringify(data));
+
+  // reward add
+  let bal = Number(localStorage.getItem("wallet")) || 0;
+
+  bal += reward;
+
+  localStorage.setItem("wallet",bal);
+
+  alert("🏆 Match Completed + Reward Added");
 }
 
 </script>
