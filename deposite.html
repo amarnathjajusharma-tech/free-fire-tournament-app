@@ -100,3 +100,31 @@ function paid(){
 
 </body>
 </html>
+<script>
+
+// AUTO TIMER FAKE VERIFY STATUS
+function paid(){
+
+  if(amount < 10){
+    alert("Select amount ❌");
+    return;
+  }
+
+  let txn = {
+    amount: amount,
+    status: "pending",
+    time: new Date().toLocaleString()
+  };
+
+  let list = JSON.parse(localStorage.getItem("transactions")) || [];
+
+  list.push(txn);
+
+  localStorage.setItem("transactions", JSON.stringify(list));
+  localStorage.setItem("pendingDeposit", amount);
+
+  document.getElementById("msg").innerHTML =
+  "⏳ Payment sent! Waiting for admin verification...";
+}
+
+</script>
