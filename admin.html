@@ -41,17 +41,17 @@ button{
 
 <h2>👑 ADMIN PANEL</h2>
 
-<!-- ROOM SET -->
+<!-- ROOM -->
 <div class="card">
-  <h3>🎮 Set Room ID</h3>
+  <h3>🎮 Set Room</h3>
 
-  <input id="room" placeholder="Enter Room ID">
-  <input id="pass" placeholder="Enter Password">
+  <input id="room" placeholder="Room ID">
+  <input id="pass" placeholder="Password">
 
   <button onclick="setRoom()">SET ROOM</button>
 </div>
 
-<!-- DEPOSIT APPROVAL -->
+<!-- DEPOSIT -->
 <div class="card">
   <h3>💰 Approve Deposit</h3>
 
@@ -60,20 +60,28 @@ button{
 
 <!-- ADD MONEY -->
 <div class="card">
-  <h3>➕ Add Money (Manual)</h3>
+  <h3>➕ Add Money</h3>
 
-  <input id="addAmt" placeholder="Enter Amount">
+  <input id="addAmt" placeholder="Amount">
 
-  <button onclick="addMoney()">Add Money</button>
+  <button onclick="addMoney()">Add</button>
 </div>
 
-<!-- COMPLETE MATCH -->
+<!-- KILL SYSTEM -->
+<div class="card">
+  <h3>🎯 Kill Result</h3>
+
+  <input id="kills" placeholder="Kills">
+  <input id="booyah" placeholder="Booyah? (yes/no)">
+
+  <button onclick="addKill()">Add Winning</button>
+</div>
+
+<!-- COMPLETE -->
 <div class="card">
   <h3>🏁 Complete Match</h3>
 
-  <input id="reward" placeholder="Enter Reward Amount">
-
-  <button onclick="completeMatch()">Complete Match</button>
+  <button onclick="completeMatch()">Complete</button>
 </div>
 
 <script>
@@ -97,7 +105,7 @@ function setRoom(){
 
   localStorage.setItem("joinedMatches",JSON.stringify(data));
 
-  alert("✅ Room Set Successfully");
+  alert("✅ Room Set");
 }
 
 // APPROVE DEPOSIT
@@ -106,7 +114,7 @@ function approveDeposit(){
   let amt = Number(localStorage.getItem("pendingDeposit"));
 
   if(!amt){
-    alert("No pending deposit ❌");
+    alert("No pending ❌");
     return;
   }
 
@@ -117,7 +125,7 @@ function approveDeposit(){
   localStorage.setItem("wallet",bal);
   localStorage.removeItem("pendingDeposit");
 
-  alert("✅ Deposit Approved & Added");
+  alert("✅ Deposit Approved");
 }
 
 // ADD MONEY
@@ -133,15 +141,44 @@ function addMoney(){
   let bal = Number(localStorage.getItem("wallet")) || 0;
 
   bal += amt;
+
   localStorage.setItem("wallet",bal);
 
   alert("✅ Money Added");
 }
 
+// KILL SYSTEM
+function addKill(){
+
+  let kills = Number(document.getElementById("kills").value);
+  let booyah = document.getElementById("booyah").value;
+
+  if(kills==="" || kills<0){
+    alert("Enter valid kills ❌");
+    return;
+  }
+
+  let win = kills * 0.5;
+
+  let type = localStorage.getItem("matchType");
+
+  if(booyah.toLowerCase()=="yes"){
+    if(type=="Solo") win += 10;
+    if(type=="Duo") win += 20;
+    if(type=="Squad") win += 40;
+  }
+
+  let bal = Number(localStorage.getItem("wallet")) || 0;
+
+  bal += win;
+
+  localStorage.setItem("wallet",bal);
+
+  alert("💰 Winning Added: ₹"+win);
+}
+
 // COMPLETE MATCH
 function completeMatch(){
-
-  let reward = Number(document.getElementById("reward").value);
 
   let data = JSON.parse(localStorage.getItem("joinedMatches")) || [];
 
@@ -150,19 +187,11 @@ function completeMatch(){
     return;
   }
 
-  // mark complete
   data[data.length-1].completed = true;
 
   localStorage.setItem("joinedMatches",JSON.stringify(data));
 
-  // reward add
-  let bal = Number(localStorage.getItem("wallet")) || 0;
-
-  bal += reward;
-
-  localStorage.setItem("wallet",bal);
-
-  alert("🏆 Match Completed + Reward Added");
+  alert("🏁 Match Completed");
 }
 
 </script>
