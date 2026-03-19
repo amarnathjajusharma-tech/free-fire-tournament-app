@@ -29,12 +29,21 @@ button {
 <input id="name" placeholder="Player Name">
 <input id="uid" placeholder="Player UID">
 
-<button onclick="next()">Continue</button>
+<button onclick="save()">Continue</button>
 
 <script>
-function next(){
-  localStorage.setItem("name", document.getElementById("name").value);
-  localStorage.setItem("uid", document.getElementById("uid").value);
+function save(){
+  let name = document.getElementById("name").value;
+  let uid = document.getElementById("uid").value;
+
+  if(!name || !uid){
+    alert("Fill all details ❌");
+    return;
+  }
+
+  localStorage.setItem("name", name);
+  localStorage.setItem("uid", uid);
+
   window.location.href = "app.html";
 }
 </script>
