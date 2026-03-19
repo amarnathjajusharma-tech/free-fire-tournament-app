@@ -4,35 +4,66 @@
 <title>PRGAMER</title>
 <style>
 body {
-  background: black;
+  background: #0a001a;
   color: white;
-  text-align: center;
   font-family: Arial;
-  padding-top: 100px;
 }
+
+.card {
+  background: #1a0033;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
+}
+
 button {
-  padding: 10px 20px;
-  margin: 10px;
-  background: purple;
+  background: red;
   color: white;
+  padding: 10px;
   border: none;
   border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🔥 Welcome to PRGAMER 🔥</h1>
-<h3>Choose Language</h3>
+<script>
+if (!localStorage.getItem("name")) {
+  window.location.href = "index.html";
+}
+</script>
 
-<button onclick="go('en')">English</button>
-<button onclick="go('hi')">Hindi</button>
+<h1>🔥 PRGAMER 🔥</h1>
+
+<div class="card">
+  <h3>Welcome</h3>
+  <p id="user"></p>
+</div>
+
+<div class="card">
+  <h3>Join Match</h3>
+  <button onclick="join()">Join Now</button>
+</div>
+
+<div class="card">
+  <h3>My Info</h3>
+  <p id="info"></p>
+</div>
 
 <script>
-function go(lang){
-  localStorage.setItem("lang", lang);
-  window.location.href = "auth.html";
+document.getElementById("user").innerText =
+  localStorage.getItem("user");
+
+document.getElementById("info").innerText =
+  localStorage.getItem("name") + " - " + localStorage.getItem("uid");
+
+function join(){
+  alert("Match Joined 🔥");
 }
 </script>
 
