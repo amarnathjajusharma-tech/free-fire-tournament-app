@@ -1,0 +1,17 @@
+// match complete reward
+setTimeout(()=>{
+
+  let players = JSON.parse(localStorage.getItem("players_"+localStorage.getItem("matchIndex"))) || [];
+
+  // random winner
+  let winner = players[Math.floor(Math.random()*players.length)];
+
+  let wallet = Number(localStorage.getItem("wallet")) || 0;
+
+  wallet += 20; // reward amount
+
+  localStorage.setItem("wallet",wallet);
+
+  alert("🏆 Winner: "+winner.uid+"\n₹20 added!");
+
+},60000);
