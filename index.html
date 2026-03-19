@@ -1,20 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome</title>
+<title>PRGAMER</title>
+<style>
+body {
+  background: #0a001a;
+  color: white;
+  font-family: Arial;
+}
+
+.card {
+  background: #1a0033;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+button {
+  background: red;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
+}
+</style>
 </head>
+
 <body>
 
-<h1>🔥 Welcome 🔥</h1>
-<h3>Choose Language</h3>
+<h1>🔥 PRGAMER 🔥</h1>
 
-<button onclick="goApp('en')">English</button>
-<button onclick="goApp('hi')">Hindi</button>
+<div class="card">
+  <h3>Welcome</h3>
+  <p id="user"></p>
+</div>
+
+<div class="card">
+  <h3>Join Match</h3>
+  <button onclick="join()">Join Now</button>
+</div>
+
+<div class="card">
+  <h3>My Info</h3>
+  <p id="info"></p>
+</div>
 
 <script>
-function goApp(lang) {
-  localStorage.setItem("lang", lang);
-  window.location.href = "app.html";
+document.getElementById("user").innerText = localStorage.getItem("user");
+
+document.getElementById("info").innerText =
+  localStorage.getItem("name") + " - " + localStorage.getItem("uid");
+
+function join(){
+  alert("Match Joined 🔥");
 }
 </script>
 
