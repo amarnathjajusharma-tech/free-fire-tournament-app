@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Support</title>
+
+<style>
+body{
+  background:black;
+  color:white;
+  text-align:center;
+  font-family:Arial;
+}
+
+button{
+  padding:15px;
+  margin:10px;
+  width:80%;
+  font-size:18px;
+  border:none;
+  border-radius:8px;
+}
+
+.whatsapp{background:#25D366;}
+.email{background:#ff5722;}
+</style>
+
+</head>
+
+<body>
+
+<h2>📞 Customer Support</h2>
+
+<p>Need help? Contact us 👇</p>
+
+<!-- WHATSAPP -->
+<button class="whatsapp" onclick="whatsapp()">
+💬 WhatsApp Support
+</button>
+
+<!-- EMAIL -->
+<button class="email" onclick="email()">
+📧 Email Support
+</button>
+
+<script>
+
+function whatsapp(){
+  window.open("https://wa.me/9337892718","_blank");
+}
+
+// EMAIL FUNCTION
+function email(){
+  window.location.href =
+  "mailto:drrohitkumardas0307@gmail.com?subject=Support Request&body=Hello PRGAMER Support, I need help...";
+}
+
+</script>
+
+</body>
+</html>
