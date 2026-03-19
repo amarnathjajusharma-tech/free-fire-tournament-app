@@ -5,33 +5,23 @@
 
 <style>
 body{
-  margin:0;
   background:black;
   color:white;
   text-align:center;
   font-family:Arial;
 }
-
-.container{
-  margin-top:100px;
-}
-
-h1{
-  font-size:28px;
-}
-
+.container{margin-top:100px;}
 button{
   padding:15px;
   margin:10px;
   width:80%;
   font-size:18px;
+  background:#ff5722;
   border:none;
   border-radius:10px;
-  background:#ff5722;
   color:white;
 }
 </style>
-
 </head>
 
 <body>
@@ -39,7 +29,6 @@ button{
 <div class="container">
 
 <h1 id="title">🔥 Welcome to PRGAMER</h1>
-
 <h3 id="langtxt">Select Language</h3>
 
 <button onclick="setLang('english')">English</button>
@@ -49,29 +38,14 @@ button{
 </div>
 
 <script>
-
 function setLang(lang){
 
-  localStorage.setItem("lang",lang);
+localStorage.setItem("lang",lang);
 
-  // language change
-  if(lang=="hindi"){
-    document.getElementById("title").innerText="🔥 PRGAMER में आपका स्वागत है";
-    document.getElementById("langtxt").innerText="भाषा चुनें";
-  }
-
-  if(lang=="odia"){
-    document.getElementById("title").innerText="🔥 PRGAMER କୁ ସ୍ୱାଗତ";
-    document.getElementById("langtxt").innerText="ଭାଷା ଚୟନ କରନ୍ତୁ";
-  }
-
-  // next page
-  setTimeout(()=>{
-    window.location="auth.html";
-  },500);
+// redirect
+window.location="auth.html";
 
 }
-
 </script>
 
 </body>
