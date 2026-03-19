@@ -143,14 +143,24 @@ db.collection("players").onSnapshot(snapshot => {
   let list = document.getElementById("list");
   list.innerHTML = "";
 
-  snapshot.forEach(doc => {
-    let data = doc.data();
-    let li = document.createElement("li");
-    li.textContent = data.name + " - " + data.uid;
-    list.appendChild(li);
-  });
-});
+snapshot.forEach(doc => {
+  let data = doc.data();
 
+  let li = document.createElement("li");
+  li.textContent = data.name + " - " + data.uid;
+
+  // 🔥 Delete button
+  let btn = document.createElement("button");
+  btn.textContent = "❌";
+  btn.style.marginLeft = "10px";
+
+  btn.onclick = () => {
+    db.collection("players").doc(doc.id).delete();
+  };
+
+  li.appendChild(btn);
+  list.appendChild(li);
+});
 </script>
 
 </body>
