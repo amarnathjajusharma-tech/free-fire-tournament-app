@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>FF Tournament</title>
+  <title>PRGAMER APP</title>
 
   <style>
     body {
@@ -9,135 +9,56 @@
       font-family: Arial;
       background: linear-gradient(to right, #000000, #1a1a1a);
       color: white;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
       text-align: center;
     }
 
-    .navbar {
-      background: #111;
-      padding: 15px;
-      font-size: 20px;
-      font-weight: bold;
+    h1 {
       color: orange;
-    }
-
-    .container {
-      margin-top: 50px;
+      font-size: 32px;
     }
 
     button {
-      padding: 12px 20px;
+      padding: 12px 25px;
       margin: 10px;
       border: none;
       background: orange;
       color: black;
       font-weight: bold;
+      border-radius: 10px;
       cursor: pointer;
-      border-radius: 8px;
+      font-size: 16px;
     }
 
     button:hover {
       background: red;
       color: white;
     }
-
-    input {
-      padding: 10px;
-      margin: 10px;
-      border-radius: 5px;
-      border: none;
-    }
-
-    .card {
-      background: #222;
-      padding: 20px;
-      margin: 20px;
-      border-radius: 10px;
-    }
   </style>
 </head>
 
 <body>
 
-<div class="navbar">
-🔥 FREE FIRE TOURNAMENT 🔥
+<div class="box">
+  <h1>🔥 Welcome to PRGAMER APP 🔥</h1>
+  <h3>Choose Language</h3>
+
+  <button onclick="go('en')">English</button>
+  <button onclick="go('hi')">Hindi</button>
 </div>
-
-<div class="container">
-
-<div class="card">
-<h2>Register Player</h2>
-<input id="name" placeholder="Enter Name">
-<input id="uid" placeholder="Enter UID">
-<button onclick="addPlayer()">Register</button>
-</div>
-
-<div class="card">
-<h2>Players List</h2>
-<ul id="list"></ul>
-</div>
-
-<button onclick="googleLogin()">Login with Google</button>
-
-</div>
-
-<!-- Firebase Scripts -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 
 <script>
-
-// 🔥 TERA FIREBASE CONFIG (change mat kar)
-const firebaseConfig = {
-  apiKey: "AIzaSyC0Pknt1rkQdGfGe63-HV_ZXT23SHVWA0M",
-  authDomain: "free-fire-tournament-57f55.firebaseapp.com",
-  projectId: "free-fire-tournament-57f55",
-  storageBucket: "free-fire-tournament-57f55.appspot.com",
-  messagingSenderId: "113487807699",
-  appId: "1:113487807699:web:8f556464f2301320ed0026"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.firestore();
-
-// 🔥 ADD PLAYER
-function addPlayer() {
-  let name = document.getElementById("name").value;
-  let uid = document.getElementById("uid").value;
-
-  db.collection("players").add({
-    name: name,
-    uid: uid
-  });
+function go(lang){
+  localStorage.setItem("lang", lang);
+  window.location.href = "app.html";
 }
-
-// 🔥 SHOW PLAYERS
-db.collection("players").onSnapshot(snapshot => {
-  let list = document.getElementById("list");
-  list.innerHTML = "";
-
-  snapshot.forEach(doc => {
-    let data = doc.data();
-    let li = document.createElement("li");
-    li.textContent = data.name + " - " + data.uid;
-    list.appendChild(li);
-  });
-});
-
-// 🔥 GOOGLE LOGIN
-function googleLogin() {
-  let provider = new firebase.auth.GoogleAuthProvider();
-
-  firebase.auth().signInWithPopup(provider)
-    .then(result => {
-      alert("Welcome " + result.user.email);
-    })
-    .catch(error => {
-      alert(error.message);
-    });
-}
-
 </script>
 
 </body>
