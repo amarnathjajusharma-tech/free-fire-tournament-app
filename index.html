@@ -2,36 +2,205 @@
 <html>
 <head>
 <title>PRGAMER</title>
+
 <style>
 body {
-  background: black;
+  background: #0a001a;
   color: white;
-  text-align: center;
   font-family: Arial;
-  padding-top: 100px;
+  text-align: center;
 }
+
+/* Pages */
+.page {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+/* Buttons */
 button {
-  padding: 12px 25px;
+  padding: 12px;
   margin: 10px;
-  background: purple;
-  color: white;
   border: none;
   border-radius: 10px;
+  background: purple;
+  color: white;
+  width: 80%;
+}
+
+/* Inputs */
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+  border-radius: 20px;
+  border: none;
+}
+
+/* Card */
+.card {
+  background: #1a0033;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
 }
 </style>
+
 </head>
 
 <body>
 
-<h1>🔥 Welcome to PRGAMER 🔥</h1>
-<h3>Choose Language</h3>
+<!-- PAGE 1 -->
+<div id="page1" class="page active">
+  <h1>🔥 Welcome to PRGAMER 🔥</h1>
+  <h3>Choose Language</h3>
+  <button onclick="nextPage(2)">Continue</button>
+</div>
 
-<button onclick="go()">Continue</button>
+<!-- PAGE 2 REGISTER / LOGIN -->
+<div id="page2" class="page">
+  <h2>Register</h2>
+
+  <input id="r_name" placeholder="Full Name">
+  <input id="r_mobile" placeholder="Mobile Number">
+  <input id="r_pass" placeholder="Password">
+
+  <button onclick="register()">Register</button>
+
+  <hr>
+
+  <h2>Login</h2>
+
+  <input id="l_mobile" placeholder="Mobile Number">
+  <input id="l_pass" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- PAGE 3 DETAILS -->
+<div id="page3" class="page">
+  <h2>Enter Details</h2>
+
+  <input id="name" placeholder="Player Name">
+  <input id="uid" placeholder="Player UID">
+
+  <button onclick="saveDetails()">Continue</button>
+</div>
+
+<!-- PAGE 4 MAIN APP -->
+<div id="page4" class="page">
+  <h1>🔥 PRGAMER 🔥</h1>
+
+  <div class="card">
+    <h3>Welcome</h3>
+    <p id="user"></p>
+  </div>
+
+  <div class="card">
+    <h3>Join Match</h3>
+    <button onclick="join()">Join Now</button>
+  </div>
+
+  <div class="card">
+    <h3>My Info</h3>
+    <p id="info"></p>
+  </div>
+</div>
 
 <script>
-function go(){
-  window.location.href = "auth.html";
+
+/* PAGE SWITCH */
+function nextPage(num){
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page"+num).classList.add("active");
 }
+
+/* REGISTER */
+function register(){
+  let name = document.getElementById("r_name").value;
+  let mobile = document.getElementById("r_mobile").value;
+  let pass = document.getElementById("r_pass").value;
+
+  if(!name || !mobile || !pass){
+    alert("Fill all fields ❌");
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if(users[mobile]){
+    alert("User already exists ⚠️");
+    return;
+  }
+
+  users[mobile] = { name: name, password: pass };
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Registered Successfully ✅");
+}
+
+/* LOGIN */
+function login(){
+  let mobile = document.getElementById("l_mobile").value;
+  let pass = document.getElementById("l_pass").value;
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if(!users[mobile]){
+    alert("User not found ❌");
+    return;
+  }
+
+  if(users[mobile].password !== pass){
+    alert("Wrong password ❌");
+    return;
+  }
+
+  localStorage.setItem("currentUser", mobile);
+
+  nextPage(3);
+}
+
+/* SAVE DETAILS */
+function saveDetails(){
+  let name = document.getElementById("name").value;
+  let uid = document.getElementById("uid").value;
+
+  if(!name || !uid){
+    alert("Fill details ❌");
+    return;
+  }
+
+  localStorage.setItem("name", name);
+  localStorage.setItem("uid", uid);
+
+  loadApp();
+  nextPage(4);
+}
+
+/* LOAD APP DATA */
+function loadApp(){
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+  let current = localStorage.getItem("currentUser");
+
+  if(current && users[current]){
+    document.getElementById("user").innerText = users[current].name;
+  }
+
+  document.getElementById("info").innerText =
+    localStorage.getItem("name") + " - " + localStorage.getItem("uid");
+}
+
+/* JOIN */
+function join(){
+  alert("Match Joined 🔥");
+}
+
 </script>
 
 </body>
