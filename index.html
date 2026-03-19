@@ -4,59 +4,33 @@
 <title>PRGAMER</title>
 <style>
 body {
-  background: #0a001a;
+  background: black;
   color: white;
+  text-align: center;
   font-family: Arial;
+  padding-top: 100px;
 }
-
-.card {
-  background: #1a0033;
-  margin: 20px;
-  padding: 20px;
-  border-radius: 15px;
-}
-
 button {
-  background: red;
+  padding: 12px 25px;
+  margin: 10px;
+  background: purple;
   color: white;
-  padding: 10px;
   border: none;
   border-radius: 10px;
-}
-
-h1 {
-  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🔥 PRGAMER 🔥</h1>
+<h1>🔥 Welcome to PRGAMER 🔥</h1>
+<h3>Choose Language</h3>
 
-<div class="card">
-  <h3>Welcome</h3>
-  <p id="user"></p>
-</div>
-
-<div class="card">
-  <h3>Join Match</h3>
-  <button onclick="join()">Join Now</button>
-</div>
-
-<div class="card">
-  <h3>My Info</h3>
-  <p id="info"></p>
-</div>
+<button onclick="go()">Continue</button>
 
 <script>
-document.getElementById("user").innerText = localStorage.getItem("user");
-
-document.getElementById("info").innerText =
-  localStorage.getItem("name") + " - " + localStorage.getItem("uid");
-
-function join(){
-  alert("Match Joined 🔥");
+function go(){
+  window.location.href = "auth.html";
 }
 </script>
 
