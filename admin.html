@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ADMIN PANEL</title>
+<title>PRGAMER ADMIN PANEL</title>
 
 <style>
 body{
@@ -34,59 +34,56 @@ button{
   border-radius:5px;
 }
 </style>
-
 </head>
 
 <body>
 
-<h2>👑 ADMIN PANEL</h2>
+<h1>👑 PRGAMER ADMIN PANEL</h1>
 
 <!-- ROOM -->
 <div class="card">
-  <h3>🎮 Set Room</h3>
-
+  <h3>🎮 Set Room ID</h3>
   <input id="room" placeholder="Room ID">
   <input id="pass" placeholder="Password">
-
   <button onclick="setRoom()">SET ROOM</button>
 </div>
 
 <!-- DEPOSIT -->
 <div class="card">
-  <h3>💰 Approve Deposit</h3>
-
+  <h3>💰 Deposit Approve</h3>
   <button onclick="approveDeposit()">Approve Deposit</button>
+</div>
+
+<!-- WITHDRAW -->
+<div class="card">
+  <h3>💸 Withdraw Approve</h3>
+  <button onclick="approveWithdraw()">Approve Withdraw</button>
 </div>
 
 <!-- ADD MONEY -->
 <div class="card">
   <h3>➕ Add Money</h3>
-
-  <input id="addAmt" placeholder="Amount">
-
-  <button onclick="addMoney()">Add</button>
+  <input id="addAmt" placeholder="Enter Amount">
+  <button onclick="addMoney()">Add Money</button>
 </div>
 
 <!-- KILL SYSTEM -->
 <div class="card">
-  <h3>🎯 Kill Result</h3>
-
+  <h3>🎯 Add Kill Winning</h3>
   <input id="kills" placeholder="Kills">
   <input id="booyah" placeholder="Booyah? (yes/no)">
-
   <button onclick="addKill()">Add Winning</button>
 </div>
 
-<!-- COMPLETE -->
+<!-- COMPLETE MATCH -->
 <div class="card">
   <h3>🏁 Complete Match</h3>
-
-  <button onclick="completeMatch()">Complete</button>
+  <button onclick="completeMatch()">Complete Match</button>
 </div>
 
 <script>
 
-// SET ROOM
+// ROOM SET
 function setRoom(){
 
   let room = document.getElementById("room").value;
@@ -105,16 +102,16 @@ function setRoom(){
 
   localStorage.setItem("joinedMatches",JSON.stringify(data));
 
-  alert("✅ Room Set");
+  alert("✅ Room ID & Password Set");
 }
 
-// APPROVE DEPOSIT
+// DEPOSIT APPROVE
 function approveDeposit(){
 
   let amt = Number(localStorage.getItem("pendingDeposit"));
 
   if(!amt){
-    alert("No pending ❌");
+    alert("No pending deposit ❌");
     return;
   }
 
@@ -125,7 +122,49 @@ function approveDeposit(){
   localStorage.setItem("wallet",bal);
   localStorage.removeItem("pendingDeposit");
 
-  alert("✅ Deposit Approved");
+  // update transaction status
+  let list = JSON.parse(localStorage.getItem("transactions")) || [];
+  if(list.length > 0){
+    list[list.length-1].status = "success";
+    localStorage.setItem("transactions", JSON.stringify(list));
+  }
+
+  alert("✅ Deposit Approved & Wallet Updated");
+}
+
+// WITHDRAW APPROVE
+function approveWithdraw(){
+
+  let list = JSON.parse(localStorage.getItem("withdraw")) || [];
+
+  if(list.length==0){
+    alert("No withdraw requests ❌");
+    return;
+  }
+
+  let last = list[list.length-1];
+
+  let bal = Number(localStorage.getItem("wallet")) || 0;
+
+  if(last.status === "done"){
+    alert("Already approved ❌");
+    return;
+  }
+
+  if(last.amount > bal){
+    alert("Low balance ❌");
+    return;
+  }
+
+  bal -= last.amount;
+
+  localStorage.setItem("wallet",bal);
+
+  last.status = "done";
+
+  localStorage.setItem("withdraw", JSON.stringify(list));
+
+  alert("✅ Withdraw Approved");
 }
 
 // ADD MONEY
@@ -144,7 +183,7 @@ function addMoney(){
 
   localStorage.setItem("wallet",bal);
 
-  alert("✅ Money Added");
+  alert("💰 Money Added");
 }
 
 // KILL SYSTEM
