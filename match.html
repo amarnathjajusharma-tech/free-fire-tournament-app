@@ -13,8 +13,8 @@ body{
 
 .header{
   padding:15px;
-  font-size:22px;
   text-align:center;
+  font-size:22px;
   background:#111;
 }
 
@@ -27,12 +27,12 @@ body{
 
 .banner{
   width:100%;
-  height:150px;
+  height:140px;
   background:linear-gradient(45deg,#ff0000,#ff9800);
 }
 
 .content{
-  padding:12px;
+  padding:10px;
 }
 
 .row{
@@ -43,13 +43,12 @@ body{
 
 .join{
   width:100%;
-  margin-top:10px;
   padding:10px;
+  margin-top:10px;
   background:#7c4dff;
   border:none;
-  border-radius:6px;
   color:white;
-  font-size:15px;
+  border-radius:6px;
 }
 </style>
 
@@ -63,12 +62,12 @@ body{
 
 <script>
 
-// wallet default
+// default wallet
 if(!localStorage.getItem("wallet")){
   localStorage.setItem("wallet",10);
 }
 
-// generate matches
+// matches generate
 let matches = [];
 let types = ["Solo","Duo","Squad"];
 let limits = {Solo:1, Duo:2, Squad:4};
@@ -80,12 +79,13 @@ let index = 0;
 while(hour < 10 || (hour === 10 && minute === 0)){
 
   let type = types[index % 3];
+
   let time = hour + ":" + (minute==0?"00":minute) + " PM";
 
   matches.push({
     type:type,
     time:time,
-    joined:Math.floor(Math.random()*30)+5,
+    joined:Math.floor(Math.random()*48),
     total:48,
     entry:1,
     kill:0.5,
@@ -101,7 +101,7 @@ while(hour < 10 || (hour === 10 && minute === 0)){
   }
 }
 
-// render UI
+// render matches
 let div = document.getElementById("matches");
 
 matches.forEach((m,i)=>{
@@ -113,6 +113,7 @@ matches.forEach((m,i)=>{
     <div class="banner"></div>
 
     <div class="content">
+
       <h3>${m.type} Tournament</h3>
 
       <div class="row">
@@ -126,32 +127,44 @@ matches.forEach((m,i)=>{
       </div>
 
       <div class="row">
-        <span>Players Allowed: ${m.limit}</span>
+        <span>Players: ${m.limit}</span>
         <span>Booyah: ₹${m.type=="Solo"?10:m.type=="Duo"?20:40}</span>
       </div>
 
       <button class="join" onclick="joinMatch(${i})">JOIN</button>
+
     </div>
   `;
 
   div.appendChild(el);
 });
 
-// JOIN FUNCTION (FIXED)
+// JOIN FUNCTION
 function joinMatch(i){
 
-  let wallet = Number(localStorage.getItem("wallet"));
+  let m = matches[i];
+
+  if(m.joined >= m.total){
+    alert("❌ Match Full");
+    return;
+  }
+
+  let wallet = Number(localStorage.getItem("wallet")) || 0;
 
   if(wallet < 1){
     alert("❌ Not enough balance");
     return;
   }
 
+  // deduct wallet
   wallet -= 1;
   localStorage.setItem("wallet",wallet);
 
-  // redirect to join page
-  window.location.href = "join.html";
+  // save match type for next page
+  localStorage.setItem("matchType",m.type);
+
+  // go next
+  window.location.href="join.html";
 }
 
 </script>
