@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<style>
+body {
+  background: black;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+}
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+  border-radius: 20px;
+  border: none;
+}
+button {
+  padding: 12px;
+  width: 80%;
+  background: purple;
+  color: white;
+  border: none;
+  border-radius: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Welcome to PRGAMER</h2>
+
+<input id="email" placeholder="Email">
+<input id="pass" placeholder="Password">
+
+<button onclick="login()">Login</button>
+<br><br>
+<button onclick="register()">Register</button>
+
+<script>
+function register(){
+  localStorage.setItem("user", document.getElementById("email").value);
+  alert("Registered ✅");
+}
+
+function login(){
+  window.location.href = "details.html";
+}
+</script>
+
+</body>
+</html>
