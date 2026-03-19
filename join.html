@@ -14,8 +14,8 @@ body{
   background:black;
   color:white;
   padding:15px;
-  font-size:18px;
   text-align:center;
+  font-size:18px;
 }
 
 .title{
@@ -77,13 +77,11 @@ body{
 
 <script>
 
-// get match index
+// match index & type
 let matchIndex = localStorage.getItem("matchIndex");
-
-// match type
 let matchType = localStorage.getItem("matchType") || "Solo";
 
-// UID NEXT
+// UID step
 function next(){
 
   let uid = document.getElementById("uid").value;
@@ -99,7 +97,7 @@ function next(){
   document.getElementById("step2").style.display="block";
 }
 
-// CREATE TEAM LIST
+// create team list
 let teamDiv = document.getElementById("teams");
 
 for(let i=1;i<=21;i++){
@@ -139,7 +137,7 @@ function finalJoin(){
     return;
   }
 
-  // player list per match
+  // players per match
   let players = JSON.parse(localStorage.getItem("players_"+matchIndex)) || [];
 
   if(players.length >= 48){
@@ -147,7 +145,7 @@ function finalJoin(){
     return;
   }
 
-  // deduct money
+  // deduct wallet
   wallet -= 1;
   localStorage.setItem("wallet",wallet);
 
@@ -159,29 +157,24 @@ function finalJoin(){
 
   localStorage.setItem("players_"+matchIndex, JSON.stringify(players));
 
-  // save match history
+  // SAVE MATCH (WAITING MODE)
   let matches = JSON.parse(localStorage.getItem("joinedMatches")) || [];
-
-  let room = Math.floor(Math.random()*900000)+100000;
-  let pass = Math.floor(Math.random()*9000)+1000;
 
   matches.push({
     type: matchType,
     time: new Date().toLocaleTimeString(),
-    room: room,
-    pass: pass,
+    room: "WAIT",
+    pass: "WAIT",
     started: false,
     completed: false
   });
 
-  localStorage.setItem("joinedMatches",JSON.stringify(matches));
+  localStorage.setItem("joinedMatches", JSON.stringify(matches));
 
-  // save room
-  localStorage.setItem("room",room);
-  localStorage.setItem("pass",pass);
+  alert("✅ Joined Successfully!\n⏳ Wait for Room ID");
 
-  // go to room
-  window.location.href="room.html";
+  // back to dashboard
+  window.location.href = "index.html";
 }
 
 </script>
