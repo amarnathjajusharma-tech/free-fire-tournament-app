@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<style>
+body{
+  background:black;
+  color:white;
+  text-align:center;
+  font-family:Arial;
+}
+
+.card{
+  padding:15px;
+  margin:10px;
+  background:purple;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<script>
+if(localStorage.getItem("loggedIn") !== "true"){
+  window.location="auth.html";
+}
+</script>
+
+<h1>🎮 PRGAMER DASHBOARD</h1>
+
+<div class="card">Upcoming Matches</div>
+<div class="card">Ongoing Matches</div>
+<div class="card">Completed Matches</div>
+<div class="card" onclick="goMatch()">FULL MAP</div>
+<div class="card">WALLET</div>
+
+<br><br>
+
+<button onclick="logout()">Logout</button>
+
+<script>
+
+function logout(){
+  localStorage.removeItem("loggedIn");
+  window.location="auth.html";
+}
+
+function goMatch(){
+  window.location="match.html";
+}
+
+</script>
+
+</body>
+</html>
