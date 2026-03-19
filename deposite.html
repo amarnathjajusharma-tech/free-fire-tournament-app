@@ -18,45 +18,49 @@ body{
   border-radius:10px;
 }
 
-img{
-  width:250px;
-  margin:20px;
-}
-
-input{
-  padding:10px;
-  width:80%;
-  margin:10px;
-}
-
 button{
   padding:12px;
-  background:#4caf50;
+  margin:10px;
+  background:#ff5722;
   border:none;
   color:white;
   border-radius:5px;
 }
+
+img{
+  width:250px;
+  margin:20px;
+  display:none;
+}
 </style>
+
 </head>
 
 <body>
 
-<h2>💰 Deposit Money</h2>
+<h2>💰 Add Money</h2>
 
 <div class="box">
 
-  <h3>Scan & Pay</h3>
+  <h3>Select Amount</h3>
 
-  <!-- 🔥 TERA QR CODE -->
-  <img src="qr.png">
+  <!-- AMOUNT OPTIONS -->
+  <button onclick="selectAmt(10)">₹10</button>
+  <button onclick="selectAmt(50)">₹50</button>
+  <button onclick="selectAmt(100)">₹100</button>
+  <button onclick="selectAmt(500)">₹500</button>
+  <button onclick="selectAmt(1000)">₹1000</button>
 
-  <p>Min ₹10 – Max ₹1000</p>
+  <p id="selected"></p>
 
-  <input id="amt" placeholder="Enter Amount">
+  <!-- QR -->
+  <img id="qr" src="qr.png">
 
   <br>
 
-  <button onclick="deposit()">I HAVE PAID</button>
+  <button id="payBtn" onclick="paid()" style="display:none;">
+    I HAVE PAID
+  </button>
 
   <p id="msg"></p>
 
@@ -64,20 +68,32 @@ button{
 
 <script>
 
-function deposit(){
+let amount = 0;
 
-  let amt = Number(document.getElementById("amt").value);
+// SELECT AMOUNT
+function selectAmt(a){
+  amount = a;
 
-  if(amt < 10 || amt > 1000){
-    alert("Min ₹10 - Max ₹1000 ❌");
+  document.getElementById("selected").innerHTML =
+  "Selected: ₹" + a;
+
+  // QR show
+  document.getElementById("qr").style.display = "block";
+  document.getElementById("payBtn").style.display = "inline-block";
+}
+
+// USER CLICK AFTER PAYMENT
+function paid(){
+
+  if(amount < 10){
+    alert("Select amount ❌");
     return;
   }
 
-  localStorage.setItem("pendingDeposit", amt);
+  localStorage.setItem("pendingDeposit", amount);
 
   document.getElementById("msg").innerHTML =
-  "⏳ Please wait for confirmation...";
-
+  "⏳ Payment sent! Waiting for admin approval...";
 }
 
 </script>
