@@ -54,7 +54,7 @@ input {
 <div id="page1" class="page active">
   <h1>🔥 Welcome to PRGAMER 🔥</h1>
   <h3>Choose Language</h3>
-  <button onclick="nextPage(2)">Continue</button>
+ <button id="continueBtn">Continue</button>
 </div>
 
 <!-- PAGE 2 -->
@@ -210,9 +210,9 @@ function loadApp(){
     document.getElementById("user").innerText = users[current].name;
   }
 
-  document.getElementById("info").innerText =
-    localStorage.getItem("name") + " - " + localStorage.getItem("uid");
-}
+ document.getElementById("continueBtn").onclick = function() {
+  nextPage(2);
+};
 
 /* JOIN */
 function join(){
