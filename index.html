@@ -77,16 +77,6 @@ input {
   <button onclick="login()">Login</button>
 </div>
 
-<!-- PAGE 3 -->
-<div id="page3" class="page">
-  <h2>Enter Details</h2>
-
-  <input id="name" placeholder="Player Name">
-  <input id="uid" placeholder="Player UID">
-
-  <button onclick="saveDetails()">Continue</button>
-</div>
-
 <!-- PAGE 4 PRO UI -->
 <div id="page4" class="page">
 
@@ -181,22 +171,7 @@ function login(){
 
   localStorage.setItem("currentUser", mobile);
 
-  nextPage(3);
-}
-
-/* SAVE DETAILS */
-function saveDetails(){
-  let name = document.getElementById("name").value;
-  let uid = document.getElementById("uid").value;
-
-  if(!name || !uid){
-    alert("Fill details ❌");
-    return;
-  }
-
-  localStorage.setItem("name", name);
-  localStorage.setItem("uid", uid);
-
+ 
   loadApp();
   nextPage(4);
 }
