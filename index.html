@@ -4,14 +4,30 @@
 <title>PRGAMER</title>
 
 <style>
-body{margin:0;background:black;color:white;font-family:Arial}
-.header{padding:15px;text-align:center;background:#111;font-size:22px}
+body{
+  margin:0;
+  background:black;
+  color:white;
+  font-family:Arial;
+}
+
+.header{
+  padding:15px;
+  text-align:center;
+  background:#111;
+  font-size:22px;
+}
+
 .card{
   margin:10px;
   padding:15px;
   background:#2a004f;
   border-radius:10px;
   text-align:center;
+}
+
+.section{
+  margin-top:10px;
 }
 </style>
 
@@ -21,50 +37,71 @@ body{margin:0;background:black;color:white;font-family:Arial}
 
 <div class="header">🔥 PRGAMER DASHBOARD</div>
 
+<!-- NAV BUTTONS -->
 <div class="card" onclick="openTab('upcoming')">📅 Upcoming Matches</div>
 <div class="card" onclick="openTab('ongoing')">🔥 Ongoing Matches</div>
 <div class="card" onclick="openTab('completed')">✅ Completed Matches</div>
+
+<div class="card" onclick="goMatch()">🎮 FULL MAP</div>
+<div class="card" onclick="goWallet()">💰 WALLET</div>
 
 <div id="content"></div>
 
 <script>
 
+// OPEN MATCH PAGE
+function goMatch(){
+  window.location.href="match.html";
+}
+
+// OPEN WALLET
+function goWallet(){
+  window.location.href="wallet.html";
+}
+
+// TAB SYSTEM
 function openTab(type){
 
   let data = JSON.parse(localStorage.getItem("joinedMatches")) || [];
   let div = document.getElementById("content");
+
   div.innerHTML = "";
 
+  // UPCOMING
   if(type=="upcoming"){
     data.forEach(m=>{
       if(!m.started){
         div.innerHTML += `
         <div class="card">
-        ⏳ ${m.type} <br>${m.time}
+          ⏳ ${m.type} Match<br>
+          Time: ${m.time}<br>
+          Status: Waiting for Room
         </div>`;
       }
     });
   }
 
+  // ONGOING
   if(type=="ongoing"){
     data.forEach(m=>{
-      if(m.started && !m.completed){
+      if(m.started && m.room!="WAIT"){
         div.innerHTML += `
         <div class="card">
-        🎮 ${m.type}<br>
-        Room: ${m.room}<br>
-        Pass: ${m.pass}
+          🎮 ${m.type} Match<br>
+          Room ID: ${m.room}<br>
+          Password: ${m.pass}
         </div>`;
       }
     });
   }
 
+  // COMPLETED
   if(type=="completed"){
     data.forEach(m=>{
       if(m.completed){
         div.innerHTML += `
         <div class="card">
-        ✅ ${m.type} Match Completed
+          ✅ ${m.type} Match Completed
         </div>`;
       }
     });
