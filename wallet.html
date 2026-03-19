@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Wallet</title>
+
+<style>
+body{background:black;color:white;text-align:center;font-family:Arial}
+.card{background:#222;margin:20px;padding:20px;border-radius:10px}
+button{padding:10px;background:green;color:white;border:none}
+</style>
+
+</head>
+
+<body>
+
+<h2>💰 WALLET</h2>
+
+<div class="card">
+Balance: ₹<span id="bal"></span>
+</div>
+
+<div class="card">
+<h3>Deposit</h3>
+
+<img src="https://via.placeholder.com/200"><br><br>
+
+<button onclick="requestDeposit()">I HAVE PAID</button>
+
+<p id="status"></p>
+</div>
+
+<script>
+
+let bal = Number(localStorage.getItem("wallet")) || 0;
+document.getElementById("bal").innerText = bal;
+
+// request deposit
+function requestDeposit(){
+
+  let amt = prompt("Enter amount:");
+
+  if(!amt) return;
+
+  localStorage.setItem("pendingDeposit", amt);
+
+  document.getElementById("status").innerText =
+  "⏳ Please wait for confirmation";
+}
+
+// ADMIN APPROVAL (SECRET)
+function approveDeposit(){
+
+  let amt = Number(localStorage.getItem("pendingDeposit"));
+
+  if(!amt){
+    alert("No pending");
+    return;
+  }
+
+  bal += amt;
+  localStorage.setItem("wallet",bal);
+
+  localStorage.removeItem("pendingDeposit");
+
+  alert("✅ Deposit Approved");
+  location.reload();
+}
+
+</script>
+
+</body>
+</html>
