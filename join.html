@@ -7,56 +7,40 @@
 body{
   margin:0;
   font-family:Arial;
-  background:black;
-  color:white;
+  background:#f5f5f5;
 }
 
 .header{
-  padding:15px;
-  background:#111;
-  text-align:center;
-  font-size:20px;
-}
-
-input{
-  width:80%;
-  padding:10px;
-  margin:10px auto;
-  display:block;
-  border-radius:8px;
-  border:none;
-}
-
-button{
-  padding:10px 20px;
-  background:#7c4dff;
+  background:black;
   color:white;
-  border:none;
-  border-radius:5px;
+  padding:15px;
+  font-size:18px;
+  text-align:center;
 }
 
-.teamBox{
-  background:#eee;
-  color:black;
-  margin:10px;
+.title{
+  background:#4b0082;
+  color:white;
+  text-align:center;
   padding:10px;
-  border-radius:10px;
 }
 
-.row{
+.team{
   display:flex;
   justify-content:space-between;
+  padding:10px 20px;
+  border-bottom:1px solid #ccc;
+  background:white;
 }
 
 .joinBtn{
   width:100%;
-  position:fixed;
-  bottom:0;
-  left:0;
   padding:15px;
-  background:#5a00cc;
+  background:#4b0082;
   color:white;
   border:none;
+  position:fixed;
+  bottom:0;
   font-size:18px;
 }
 </style>
@@ -67,12 +51,12 @@ button{
 
 <div class="header">🎮 JOIN MATCH</div>
 
-<!-- STEP 1 UID -->
+<!-- UID -->
 <div id="step1">
 
   <h3 style="text-align:center;">Enter UID</h3>
 
-  <input id="uid" placeholder="Enter Game UID">
+  <input id="uid" placeholder="Enter Game UID" style="width:80%;padding:10px;margin:20px auto;display:block;">
 
   <div style="text-align:center;">
     <button onclick="next()">Continue</button>
@@ -80,10 +64,10 @@ button{
 
 </div>
 
-<!-- STEP 2 TEAM -->
+<!-- TEAM -->
 <div id="step2" style="display:none;">
 
-  <h3 style="text-align:center;">Select Team</h3>
+  <div class="title">Select Match Position</div>
 
   <div id="teams"></div>
 
@@ -93,13 +77,15 @@ button{
 
 <script>
 
-// match type (default solo)
+// get match index
+let matchIndex = localStorage.getItem("matchIndex");
+
+// match type
 let matchType = localStorage.getItem("matchType") || "Solo";
 
-let limit = matchType=="Solo"?1:matchType=="Duo"?2:4;
-
-// UID step
+// UID NEXT
 function next(){
+
   let uid = document.getElementById("uid").value;
 
   if(!uid){
@@ -113,28 +99,30 @@ function next(){
   document.getElementById("step2").style.display="block";
 }
 
-// create teams
+// CREATE TEAM LIST
 let teamDiv = document.getElementById("teams");
 
-for(let i=1;i<=20;i++){
+for(let i=1;i<=21;i++){
 
   let div = document.createElement("div");
-  div.className="teamBox";
+  div.className="team";
 
   div.innerHTML=`
-    <div class="row">
-      <span>Team ${i}</span>
-      <span>
-        A <input type="radio" name="team" value="${i}-A">
-        B <input type="radio" name="team" value="${i}-B">
-      </span>
-    </div>
+    <span>Team ${i}</span>
+
+    <span>
+      1 <input type="radio" name="team" value="${i}-A">
+    </span>
+
+    <span>
+      2 <input type="radio" name="team" value="${i}-B">
+    </span>
   `;
 
   teamDiv.appendChild(div);
 }
 
-// join final
+// FINAL JOIN
 function finalJoin(){
 
   let selected = document.querySelector('input[name="team"]:checked');
@@ -151,32 +139,48 @@ function finalJoin(){
     return;
   }
 
+  // player list per match
+  let players = JSON.parse(localStorage.getItem("players_"+matchIndex)) || [];
+
+  if(players.length >= 48){
+    alert("❌ Match Full");
+    return;
+  }
+
+  // deduct money
   wallet -= 1;
   localStorage.setItem("wallet",wallet);
 
   // save player
-  let players = JSON.parse(localStorage.getItem("players")) || [];
-
-  if(players.length >= 48){
-    alert("Match Full ❌");
-    return;
-  }
-
   players.push({
-    uid:localStorage.getItem("uid"),
-    team:selected.value
+    uid: localStorage.getItem("uid"),
+    team: selected.value
   });
 
-  localStorage.setItem("players",JSON.stringify(players));
+  localStorage.setItem("players_"+matchIndex, JSON.stringify(players));
 
-  // generate room
+  // save match history
+  let matches = JSON.parse(localStorage.getItem("joinedMatches")) || [];
+
   let room = Math.floor(Math.random()*900000)+100000;
   let pass = Math.floor(Math.random()*9000)+1000;
 
+  matches.push({
+    type: matchType,
+    time: new Date().toLocaleTimeString(),
+    room: room,
+    pass: pass,
+    started: false,
+    completed: false
+  });
+
+  localStorage.setItem("joinedMatches",JSON.stringify(matches));
+
+  // save room
   localStorage.setItem("room",room);
   localStorage.setItem("pass",pass);
 
-  // redirect
+  // go to room
   window.location.href="room.html";
 }
 
