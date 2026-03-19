@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Withdraw</title>
+
+<style>
+body{
+  background:black;
+  color:white;
+  text-align:center;
+}
+
+input{
+  padding:10px;
+  width:80%;
+  margin:10px;
+}
+
+button{
+  padding:10px;
+  background:red;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<h2>💸 Withdraw Money</h2>
+
+<p id="bal"></p>
+
+<input id="amt" placeholder="Enter Amount">
+<input id="upi" placeholder="Enter UPI ID">
+
+<button onclick="withdraw()">Withdraw</button>
+
+<p id="msg"></p>
+
+<script>
+
+let bal = Number(localStorage.getItem("wallet")) || 0;
+
+document.getElementById("bal").innerHTML =
+"Wallet: ₹" + bal;
+
+function withdraw(){
+
+  let amt = Number(document.getElementById("amt").value);
+
+  if(amt < 10 || amt > 1000){
+    alert("Min 10 Max 1000 ❌");
+    return;
+  }
+
+  if(amt > bal){
+    alert("Not enough balance ❌");
+    return;
+  }
+
+  let req = {
+    amount: amt,
+    status: "pending",
+    time: new Date().toLocaleString()
+  };
+
+  let list = JSON.parse(localStorage.getItem("withdraw")) || [];
+
+  list.push(req);
+
+  localStorage.setItem("withdraw", JSON.stringify(list));
+
+  document.getElementById("msg").innerHTML =
+  "⏳ Withdraw request sent";
+
+}
+
+</script>
+
+</body>
+</html>
