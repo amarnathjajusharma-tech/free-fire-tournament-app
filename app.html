@@ -1,169 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PRGAMER TOURNAMENT</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: linear-gradient(to right, #000, #111);
-      color: white;
-      text-align: center;
-    }
-
-    .navbar {
-      background: black;
-      padding: 15px;
-      font-size: 22px;
-      color: orange;
-    }
-
-    .card {
-      background: #222;
-      margin: 20px auto;
-      padding: 20px;
-      width: 300px;
-      border-radius: 10px;
-    }
-
-    input, button {
-      padding: 10px;
-      margin: 8px;
-      width: 90%;
-      border: none;
-      border-radius: 5px;
-    }
-
-    button {
-      background: orange;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: red;
-      color: white;
-    }
-  </style>
+<title>PRGAMER</title>
+<style>
+body {
+  background: black;
+  color: white;
+  text-align: center;
+  font-family: Arial;
+  padding-top: 100px;
+}
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  background: purple;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="navbar">
-🔥 PRGAMER TOURNAMENT 🔥
-</div>
+<h1>🔥 Welcome to PRGAMER 🔥</h1>
+<h3>Choose Language</h3>
 
-<!-- CREATE MATCH -->
-<div class="card">
-<h3>Create Match (Admin)</h3>
-
-<input id="room" placeholder="Room ID">
-<input id="pass" placeholder="Password">
-<input id="time" placeholder="Match Time">
-
-<button onclick="createMatch()">Create Match</button>
-</div>
-
-<!-- JOIN MATCH -->
-<div class="card">
-<h3>Join Match</h3>
-
-<input id="name" placeholder="Player Name">
-<input id="uid" placeholder="Player UID">
-
-<button onclick="joinMatch()">Join</button>
-</div>
-
-<!-- SHOW MATCH -->
-<div class="card">
-<h3>Match Details</h3>
-<p id="match"></p>
-</div>
-
-<!-- PLAYER LIST -->
-<div class="card">
-<h3>Players</h3>
-<ul id="list"></ul>
-</div>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<button onclick="go('en')">English</button>
+<button onclick="go('hi')">Hindi</button>
 
 <script>
-
-const firebaseConfig = {
-  apiKey: "AIzaSyC0PKnt1rkQdGfGe63-HV_ZXT23SHVWA0M",
-  authDomain: "free-fire-tournament-57f55.firebaseapp.com",
-  projectId: "free-fire-tournament-57f55",
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// 🔥 CREATE MATCH
-function createMatch() {
-  let room = document.getElementById("room").value;
-  let pass = document.getElementById("pass").value;
-  let time = document.getElementById("time").value;
-
-  db.collection("match").doc("current").set({
-    room: room,
-    pass: pass,
-    time: time
-  });
-
-  alert("Match Created 🔥");
+function go(lang){
+  localStorage.setItem("lang", lang);
+  window.location.href = "auth.html";
 }
-
-// 🔥 SHOW MATCH
-db.collection("match").doc("current").onSnapshot(doc => {
-  let data = doc.data();
-  if (data) {
-    document.getElementById("match").innerText =
-      "Room: " + data.room + " | Pass: " + data.pass + " | Time: " + data.time;
-  }
-});
-
-// 🔥 JOIN MATCH
-function joinMatch() {
-  let name = document.getElementById("name").value;
-  let uid = document.getElementById("uid").value;
-
-  db.collection("players").doc(uid).set({
-    name: name,
-    uid: uid
-  });
-
-  alert("Joined 🔥");
-}
-
-// 🔥 PLAYER LIST
-db.collection("players").onSnapshot(snapshot => {
-  let list = document.getElementById("list");
-  list.innerHTML = "";
-
-snapshot.forEach(doc => {
-  let data = doc.data();
-
-  let li = document.createElement("li");
-  li.textContent = data.name + " - " + data.uid;
-
-  // 🔥 Delete button
-  let btn = document.createElement("button");
-  btn.textContent = "Delete";
-btn.style.background = "red";
-btn.style.color = "white";
-btn.style.padding = "5px 10px";
-  btn.style.marginLeft = "10px";
-
-  btn.onclick = () => {
-    db.collection("players").doc(doc.id).delete();
-  };
-
-  li.appendChild(btn);
-  list.appendChild(li);
-});
 </script>
 
 </body>
