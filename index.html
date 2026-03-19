@@ -4,133 +4,72 @@
 <title>PRGAMER</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:linear-gradient(45deg,#0f2027,#2c5364);
-  color:white;
+body{margin:0;background:black;color:white;font-family:Arial}
+.header{padding:15px;text-align:center;background:#111;font-size:22px}
+.card{
+  margin:10px;
+  padding:15px;
+  background:#2a004f;
+  border-radius:10px;
   text-align:center;
 }
-
-.page{
-  display:none;
-  padding:20px;
-}
-.active{
-  display:block;
-}
-
-input{
-  display:block;
-  margin:10px auto;
-  padding:10px;
-  width:80%;
-  border-radius:10px;
-  border:none;
-}
-
-button{
-  padding:10px 20px;
-  border:none;
-  border-radius:10px;
-  background:#ff9800;
-  color:white;
-  cursor:pointer;
-}
-
-.card{
-  background:#111;
-  padding:15px;
-  margin:10px;
-  border-radius:10px;
-}
 </style>
+
 </head>
 
 <body>
 
-<!-- PAGE 1 -->
-<div id="page1" class="page active">
-  <h1>🔥 Welcome to PRGAMER 🔥</h1>
-  <h3>Choose Language</h3>
-  <button id="continueBtn">Continue</button>
-</div>
+<div class="header">🔥 PRGAMER DASHBOARD</div>
 
-<!-- PAGE 2 LOGIN -->
-<div id="page2" class="page">
-  <h2>Register</h2>
-  <input id="r_name" placeholder="Full Name">
-  <input id="r_mobile" placeholder="Mobile Number">
-  <input id="r_pass" placeholder="Password">
-  <button onclick="register()">Register</button>
+<div class="card" onclick="openTab('upcoming')">📅 Upcoming Matches</div>
+<div class="card" onclick="openTab('ongoing')">🔥 Ongoing Matches</div>
+<div class="card" onclick="openTab('completed')">✅ Completed Matches</div>
 
-  <h2>Login</h2>
-  <input id="l_mobile" placeholder="Mobile Number">
-  <input id="l_pass" placeholder="Password">
-  <button onclick="login()">Login</button>
-</div>
-
-<!-- PAGE 4 MAIN APP -->
-<div id="page4" class="page">
-  <h1>🎮 PRGAMER DASHBOARD</h1>
-
- <a href="match.html" style="text-decoration:none; color:white;">
-  <div class="card">🔥 FULL MAP</div>
-</a>
-  <div class="card">⚔️ 1v1 MATCH</div>
-  <div class="card">💀 2v2 MATCH</div>
-  <div class="card">🎁 FREE MATCH</div>
-</div>
+<div id="content"></div>
 
 <script>
 
-let users = JSON.parse(localStorage.getItem("users")) || {};
+function openTab(type){
 
-function nextPage(p){
-  document.querySelectorAll(".page").forEach(e=>e.classList.remove("active"));
-  document.getElementById("page"+p).classList.add("active");
-}
+  let data = JSON.parse(localStorage.getItem("joinedMatches")) || [];
+  let div = document.getElementById("content");
+  div.innerHTML = "";
 
-// Continue button fix
-document.getElementById("continueBtn").onclick = function(){
-  nextPage(2);
-};
-
-// Register
-function register(){
-  let name = document.getElementById("r_name").value;
-  let mobile = document.getElementById("r_mobile").value;
-  let pass = document.getElementById("r_pass").value;
-
-  if(!name || !mobile || !pass){
-    alert("Fill all fields");
-    return;
+  if(type=="upcoming"){
+    data.forEach(m=>{
+      if(!m.started){
+        div.innerHTML += `
+        <div class="card">
+        ⏳ ${m.type} <br>${m.time}
+        </div>`;
+      }
+    });
   }
 
-  users[mobile] = {name:name,password:pass};
-  localStorage.setItem("users",JSON.stringify(users));
-
-  alert("Registered Successfully");
-}
-
-// Login
-function login(){
-  let mobile = document.getElementById("l_mobile").value;
-  let pass = document.getElementById("l_pass").value;
-
-  if(!users[mobile]){
-    alert("User not found");
-    return;
+  if(type=="ongoing"){
+    data.forEach(m=>{
+      if(m.started && !m.completed){
+        div.innerHTML += `
+        <div class="card">
+        🎮 ${m.type}<br>
+        Room: ${m.room}<br>
+        Pass: ${m.pass}
+        </div>`;
+      }
+    });
   }
 
-  if(users[mobile].password !== pass){
-    alert("Wrong password");
-    return;
+  if(type=="completed"){
+    data.forEach(m=>{
+      if(m.completed){
+        div.innerHTML += `
+        <div class="card">
+        ✅ ${m.type} Match Completed
+        </div>`;
+      }
+    });
   }
 
-  localStorage.setItem("currentUser",mobile);
-
-  nextPage(4);
 }
 
 </script>
