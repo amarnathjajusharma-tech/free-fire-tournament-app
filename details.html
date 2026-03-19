@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Details</title>
+<style>
+body {
+  background: black;
+  color: white;
+  text-align: center;
+}
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+}
+button {
+  padding: 10px;
+  background: purple;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Enter Details</h2>
+
+<input id="name" placeholder="Player Name">
+<input id="uid" placeholder="Player UID">
+
+<button onclick="next()">Continue</button>
+
+<script>
+function next(){
+  localStorage.setItem("name", document.getElementById("name").value);
+  localStorage.setItem("uid", document.getElementById("uid").value);
+  window.location.href = "app.html";
+}
+</script>
+
+</body>
+</html>
