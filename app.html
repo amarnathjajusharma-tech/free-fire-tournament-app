@@ -151,7 +151,10 @@ snapshot.forEach(doc => {
 
   // 🔥 Delete button
   let btn = document.createElement("button");
-  btn.textContent = "❌";
+  btn.textContent = "Delete";
+btn.style.background = "red";
+btn.style.color = "white";
+btn.style.padding = "5px 10px";
   btn.style.marginLeft = "10px";
 
   btn.onclick = () => {
