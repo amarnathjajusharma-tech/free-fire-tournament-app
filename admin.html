@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+</head>
+
+<body style="background:black;color:white;text-align:center">
+
+<h2>ADMIN ROOM SET</h2>
+
+<input id="room" placeholder="Room ID"><br><br>
+<input id="pass" placeholder="Password"><br><br>
+
+<button onclick="setRoom()">SET ROOM</button>
+
+<script>
+
+function setRoom(){
+
+  let room = document.getElementById("room").value;
+  let pass = document.getElementById("pass").value;
+
+  let data = JSON.parse(localStorage.getItem("joinedMatches")) || [];
+
+  if(data.length==0){
+    alert("No match ❌");
+    return;
+  }
+
+  // last match update
+  data[data.length-1].room = room;
+  data[data.length-1].pass = pass;
+  data[data.length-1].started = true;
+
+  localStorage.setItem("joinedMatches",JSON.stringify(data));
+
+  alert("✅ Room Updated");
+}
+
+</script>
+
+</body>
+</html>
