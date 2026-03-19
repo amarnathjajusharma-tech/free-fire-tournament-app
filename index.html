@@ -8,43 +8,27 @@ body{
   margin:0;
   background:black;
   color:white;
+  text-align:center;
   font-family:Arial;
 }
 
-/* TOP WALLET */
-#topbar{
-  position:fixed;
-  top:0;
-  right:0;
-  background:#ff5722;
-  padding:10px 20px;
-  border-bottom-left-radius:10px;
-  font-size:16px;
-  cursor:pointer;
-  z-index:999;
+.container{
+  margin-top:100px;
 }
 
-/* HEADER */
-.header{
-  padding:20px;
-  text-align:center;
-  font-size:22px;
-  background:#111;
+h1{
+  font-size:28px;
 }
 
-/* CARD */
-.card{
-  margin:15px;
+button{
   padding:15px;
-  background:#2a004f;
+  margin:10px;
+  width:80%;
+  font-size:18px;
+  border:none;
   border-radius:10px;
-  text-align:center;
-  cursor:pointer;
-}
-
-/* CONTENT */
-#content{
-  margin-top:10px;
+  background:#ff5722;
+  color:white;
 }
 </style>
 
@@ -52,91 +36,39 @@ body{
 
 <body>
 
-<!-- WALLET -->
-<div id="topbar" onclick="window.location='wallet.html'">
-💰 ₹<span id="bal">0</span>
+<div class="container">
+
+<h1 id="title">🔥 Welcome to PRGAMER</h1>
+
+<h3 id="langtxt">Select Language</h3>
+
+<button onclick="setLang('english')">English</button>
+<button onclick="setLang('hindi')">Hindi</button>
+<button onclick="setLang('odia')">Odia</button>
+
 </div>
-
-<!-- HEADER -->
-<div class="header">🔥 PRGAMER DASHBOARD</div>
-
-<!-- NAV -->
-<div class="card" onclick="openTab('upcoming')">📅 Upcoming Matches</div>
-<div class="card" onclick="openTab('ongoing')">🔥 Ongoing Matches</div>
-<div class="card" onclick="openTab('completed')">✅ Completed Matches</div>
-
-<div class="card" onclick="goMatch()">🎮 FULL MAP</div>
-<div class="card" onclick="goWallet()">💰 WALLET</div>
-
-<!-- CONTENT -->
-<div id="content"></div>
 
 <script>
 
-// NAVIGATION
-function goMatch(){
-  window.location.href="match.html";
-}
+function setLang(lang){
 
-function goWallet(){
-  window.location.href="wallet.html";
-}
+  localStorage.setItem("lang",lang);
 
-// LIVE BALANCE
-function updateBalance(){
-  let bal = localStorage.getItem("wallet") || 0;
-  document.getElementById("bal").innerText = bal;
-}
-setInterval(updateBalance,1000);
-updateBalance();
-
-// TAB SYSTEM
-function openTab(type){
-
-  let data = JSON.parse(localStorage.getItem("joinedMatches")) || [];
-  let div = document.getElementById("content");
-
-  div.innerHTML = "";
-
-  // UPCOMING
-  if(type=="upcoming"){
-    data.forEach(m=>{
-      if(!m.started){
-        div.innerHTML += `
-        <div class="card">
-          ⏳ ${m.type} Match<br>
-          Time: ${m.time}<br>
-          Status: Waiting for Room
-        </div>`;
-      }
-    });
+  // language change
+  if(lang=="hindi"){
+    document.getElementById("title").innerText="🔥 PRGAMER में आपका स्वागत है";
+    document.getElementById("langtxt").innerText="भाषा चुनें";
   }
 
-  // ONGOING
-  if(type=="ongoing"){
-    data.forEach(m=>{
-      if(m.started && m.room!="WAIT"){
-        div.innerHTML += `
-        <div class="card">
-          🎮 ${m.type} Match<br>
-          Room ID: ${m.room}<br>
-          Password: ${m.pass}
-        </div>`;
-      }
-    });
+  if(lang=="odia"){
+    document.getElementById("title").innerText="🔥 PRGAMER କୁ ସ୍ୱାଗତ";
+    document.getElementById("langtxt").innerText="ଭାଷା ଚୟନ କରନ୍ତୁ";
   }
 
-  // COMPLETED
-  if(type=="completed"){
-    data.forEach(m=>{
-      if(m.completed){
-        div.innerHTML += `
-        <div class="card">
-          ✅ ${m.type} Match Completed
-        </div>`;
-      }
-    });
-  }
+  // next page
+  setTimeout(()=>{
+    window.location="auth.html";
+  },500);
 
 }
 
